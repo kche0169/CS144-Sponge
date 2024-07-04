@@ -1,3 +1,33 @@
+
+
+
+
+
+
+## Part 3 Webget
+本部分要求实现一个
+
+## Part 4 Bytes Stream
+本部分要求实现一个字节流的缓冲区，难度不高，不用考虑多线程和锁的问题。
+思路如下：
+- 关于BUFFER的实现：
+    1. 需要一个一端写入一段读出的数据结构。读完题很自然的想到queue. 但是C++的queue不可以按照index随机访问。因此我们可以采用deque实现。当然采用
+    string也是一个不错的选择，但是这样会涉及到一个拼接字符串的操作。或者可以使用一个数组实现一个queue也是一个不错的选择。
+    2. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 For build prereqs, see [the CS144 VM setup instructions](https://web.stanford.edu/class/cs144/vm_howto).
 
 ## Sponge quickstart

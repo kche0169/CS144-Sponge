@@ -1,20 +1,7 @@
 Lab 0 Writeup
 =============
+怎么说呢？这个lab0确实不怎么困难，甚至可以说是简单，对于热身项目来说非常合适。
+文档也很齐全，唯独在byte stream里面对于EOF部分的描述有些模糊，容易让人产生误解。
 
-My name: [your name here]
 
-My SUNet ID: [your sunetid here]
 
-I collaborated with: [list sunetids here]
-
-This lab took me about [n] hours to do. I [did/did not] attend the lab session.
-
-My secret code from section 2.1 was: [code here]
-
-- Optional: I had unexpected difficulty with: [describe]
-
-- Optional: I think you could make this lab better by: [describe]
-
-- Optional: I was surprised by: [describe]
-
-- Optional: I'm not sure about: [describe]
