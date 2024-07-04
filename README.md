@@ -33,7 +33,8 @@ To test (after building; make sure you've got the [build prereqs](https://web.st
 
     $ make check_labN *(replacing N with a checkpoint number)*
 
-The first time you run `make check_lab...`, it will run `sudo` to configure two
+The first time you run `make check_lab...`, it will run `sudo` to configure two.
+注释：这里可以直接双击tab可以展示命令
 [TUN](https://www.kernel.org/doc/Documentation/networking/tuntap.txt) devices for use during
 testing.
 
