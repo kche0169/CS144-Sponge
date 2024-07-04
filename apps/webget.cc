@@ -16,18 +16,32 @@ void get_URL(const string &host, const string &path) {
     // Then you'll need to print out everything the server sends back,
     // (not just one call to read() -- everything) until you reach
     // the "eof" (end of file).
-    TCPSocket MySoc;
-    MySoc.connect(Address(host, "http"));
-    MySoc.write("GET " + path + " HTTP/1.1\r\n");
-    // MySoc.write("Host: " + host + "\r\n\r\nConnection: close\r\n\r\n");
-    MySoc.write("Host: " + host + "\r\n\r\n");
-    MySoc.shutdown(SHUT_WR); // 停止读行为
-    while(!MySoc.eof()) {
-        cout << MySoc.read();
-    } // 不断读输入，直到没有输入
-    MySoc.close(); // 没有输入之后，关闭这个socket
-    // cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
-    // cerr << "Warning: get_URL() has not been implemented yet.\n";
+    const std::string http_service = "http";
+    const std::string http_version = "HTTP/1.1";
+    const std::string crlf = "\r\n";
+
+    try {
+        // 创建并连接套接字
+        TCPSocket socket;
+        socket.connect(Address(host, http_service));
+
+        // 构建HTTP请求
+        std::string request = "GET " + path + " " + http_version + crlf +
+                              "Host: " + host + crlf + 
+                              "Connection: close" + crlf + crlf;
+        socket.write(request);
+        socket.shutdown(SHUT_WR); // 停止写操作
+
+        // 读取并输出服务器响应
+        while (!socket.eof()) {
+            std::cout << socket.read();
+        }
+
+        // 关闭套接字
+        socket.close();
+    } catch (const std::exception &e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
 }
 
 int main(int argc, char *argv[]) {
