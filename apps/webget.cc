@@ -16,9 +16,18 @@ void get_URL(const string &host, const string &path) {
     // Then you'll need to print out everything the server sends back,
     // (not just one call to read() -- everything) until you reach
     // the "eof" (end of file).
-
-    cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
-    cerr << "Warning: get_URL() has not been implemented yet.\n";
+    TCPSocket MySoc;
+    MySoc.connect(Address(host, "http"));
+    MySoc.write("GET " + path + " HTTP/1.1\r\n");
+    // MySoc.write("Host: " + host + "\r\n\r\nConnection: close\r\n\r\n");
+    MySoc.write("Host: " + host + "\r\n\r\n");
+    MySoc.shutdown(SHUT_WR); // 停止读行为
+    while(!MySoc.eof()) {
+        cout << MySoc.read();
+    } // 不断读输入，直到没有输入
+    MySoc.close(); // 没有输入之后，关闭这个socket
+    // cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
+    // cerr << "Warning: get_URL() has not been implemented yet.\n";
 }
 
 int main(int argc, char *argv[]) {
