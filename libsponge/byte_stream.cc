@@ -18,7 +18,7 @@ ByteStream::ByteStream(const size_t capacity) : buf_capacity(capacity), buf(), _
 size_t ByteStream::write(const string &data) {
     size_t _data_size = size_t(data.size());
     size_t _temp_bytes_written = min(remaining_capacity(), _data_size);
-    if (_data_size > remaining_capacity()) set_error();
+    // if (_data_size > remaining_capacity()) set_error();
     for (size_t i = 0; i < _temp_bytes_written; i ++) {
             buf.push_back(data[i]);
     }
