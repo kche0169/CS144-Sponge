@@ -29,14 +29,10 @@ size_t ByteStream::write(const string &data) {
 
 //! \param[in] len bytes will be copied from the output side of the buffer
 string ByteStream::peek_output(const size_t len) const {
-    string _peek_data;
     // 考虑len合法与否的情况
     // 只访问小于len和buf长度的数据, 超过buffer长度的数据会读不出来
     auto real_len = min(len, buffer_size());
-    for (size_t i = 0; i < real_len; i ++) {
-        _peek_data += buf[i];
-    }
-    return _peek_data;
+    return string().assign(buf.begin(), buf.begin() + real_len);
 }
 
 //! \param[in] len bytes will be removed from the output side of the buffer
@@ -77,7 +73,7 @@ size_t ByteStream::buffer_size() const {
 
 bool ByteStream::buffer_empty() const { 
     // true if the buffer is empty
-    return (buffer_size() == 0) ? true : false; 
+    return buffer_size() == 0; 
 }
 
 bool ByteStream::eof() const { 

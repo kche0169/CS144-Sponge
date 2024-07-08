@@ -9,6 +9,14 @@
 #include <map>
 #include <optional>
 
+
+enum class Status {
+    ASSEMBLED,    // 0
+    UNASSEMBLED,    // 1
+    PENDING       // 2
+};
+
+
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
 class StreamReassembler {
@@ -17,7 +25,7 @@ class StreamReassembler {
 
     ByteStream _output;  //!< The reassembled in-order byte stream
     size_t _capacity;    //!< The maximum number of bytes
-    std::vector<std::pair<char, bool>> _bytes_container; // a data structure to store the unordered data
+    std::vector<std::pair<char, Status>> _bytes_container; // a data structure to store the unordered data
     uint64_t _current_index;
     uint64_t _eof_index;
     size_t _expected_string_index;

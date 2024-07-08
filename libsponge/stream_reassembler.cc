@@ -31,6 +31,8 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
     // const size_t container_size = _bytes_container.size();
     const size_t data_size = data.size();
 
+    if (data_size == 0 && !eof) return;
+
     // 计算预期字符串的大小，仅在 eof 为 true 时更新
     if (eof) {
         _eof = true;
@@ -40,40 +42,34 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
     // 扩展 _bytes_container 的大小以容纳新数据
     size_t str_end = max(index + data_size, _bytes_container.size());
     if (str_end > _bytes_container.size()) {
-        _bytes_container.resize(str_end, make_pair('\0', false));
+        _bytes_container.resize(str_end, make_pair('\0', Status::PENDING));
     }
-
+  
     // 将 data 中的数据复制到 _bytes_container 中相应位置
-    auto st = max(index, _current_index);
-    auto ed = min(index + data_size, min( _current_index + _output.remaining_capacity(), _expected_string_index));
-    for (size_t i = st, j = st - index; i < ed; ++i, ++j) {
-        size_t pos = index + i;
-        if (_bytes_container[pos].second == false) {
-            _bytes_container[pos].first = data[i];
+    auto start = max(index, _current_index);
+    auto end = min(index + data_size, min( _current_index + _output.remaining_capacity(), _expected_string_index));
+    for (size_t i = start, j = start - index; i < end; ++i, ++j) {
+        if (_bytes_container[i].second == Status::PENDING) {
+            _bytes_container[i].first = data[j];
+            _bytes_container[i].second = Status::UNASSEMBLED;
             _unassembled_bytes++;
         }
     }
 
     // 从 _current_index 开始构建输入字符串 _input
     std::string input;
-    // size_t minVal = min(_current_index + _output.remaining_capacity(), _bytes_container.size());
-    // for (size_t i = _current_index; i < _expected_string_index; ++i) {
-    //     if (_bytes_container[i].second != true) {
-    //         input += _bytes_container[i].first;
-    //         _bytes_container[i].second = true;
-    //         _unassembled_bytes --;
-    //     } else {
-    //         break;
-    //     }
-    // }
-    while (_current_index < _expected_string_index && _bytes_container[_current_index].second != true) {
-        input.push_back(_bytes_container[_current_index].first);
-        _bytes_container[_current_index] = { 0, false };
-        --_unassembled_bytes;
+    // while (_current_index < _expected_string_index && _bytes_container[_current_index].second != true) 
+    
+    while (_current_index < _expected_string_index) {
+        if (_bytes_container[_current_index].second == Status::UNASSEMBLED) {
+            input.push_back(_bytes_container[_current_index].first);
+            _bytes_container[_current_index] = {0, Status::ASSEMBLED};
+        } else {
+            break;
+        }
+        _unassembled_bytes --;
         _current_index ++;
     }
-    // size_t input_limit = min(_output.remaining_capacity(), input.size());
-    // _current_index += input.size();
     _output.write(input);
     
 
