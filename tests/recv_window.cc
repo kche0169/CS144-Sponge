@@ -74,6 +74,7 @@ int main() {
 
         {
             // almost-high-seqno segment is accepted, but only some bytes are kept
+
             size_t cap = 2;
             uint32_t isn = 23452;
             TCPReceiverTestHarness test{cap};

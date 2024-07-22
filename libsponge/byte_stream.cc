@@ -32,7 +32,8 @@ string ByteStream::peek_output(const size_t len) const {
     // 考虑len合法与否的情况
     // 只访问小于len和buf长度的数据, 超过buffer长度的数据会读不出来
     auto real_len = min(len, buffer_size());
-    return string().assign(buf.begin(), buf.begin() + real_len);
+    return string(buf.begin(), buf.begin() + real_len);
+
 }
 
 //! \param[in] len bytes will be removed from the output side of the buffer
